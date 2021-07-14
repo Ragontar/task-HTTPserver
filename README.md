@@ -1,6 +1,6 @@
 # HTTP server
 ## About
-A small server which a creates database entry on POST-request and returns an entry in JSON format on GET-request.
+A small server which creates a database entry on POST-request and returns an entry in JSON format on GET-request.
 
 ## Usage
 POST or GET request: <a>http://host:port/?name=$</a>
