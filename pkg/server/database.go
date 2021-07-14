@@ -3,8 +3,8 @@ package server
 import (
 	"context"
 	"fmt"
-	"time"
 	"github.com/jackc/pgx/v4"
+	"time"
 )
 
 /*
@@ -17,19 +17,19 @@ import (
 	Init() *pgx.Conn --- tries to initialize a connection to PostgreSQL database. (driver - pgx)
 		Returns nil in case of failure.
 
-	GetDB() *pgx.Conn --- returns db connection if it's initialized, otherwise runs Init(). 
+	GetDB() *pgx.Conn --- returns db connection if it's initialized, otherwise runs Init().
 		Also has a progressive delay between attempts.
 
 
 */
 
 type Database struct {
-	Host string `json:"host"`
-	User string `json:"user"`
+	Host     string `json:"host"`
+	User     string `json:"user"`
 	Password string `json:"password"`
-	Dbname string `json:"dbname"`
-	Port string `json:"port"`
-	Sslmode string `json:"sslmode"`
+	Dbname   string `json:"dbname"`
+	Port     string `json:"port"`
+	Sslmode  string `json:"sslmode"`
 }
 
 var db *pgx.Conn
@@ -37,9 +37,9 @@ var db *pgx.Conn
 func Init() *pgx.Conn {
 	dbConf := getConfig().Db
 
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s", 
-						dbConf.Host, dbConf.User, dbConf.Password, dbConf.Dbname, dbConf.Port, 
-						dbConf.Sslmode)
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
+		dbConf.Host, dbConf.User, dbConf.Password, dbConf.Dbname, dbConf.Port,
+		dbConf.Sslmode)
 
 	db, err := pgx.Connect(context.Background(), dsn)
 	if err != nil {
@@ -64,4 +64,3 @@ func GetDB() *pgx.Conn {
 
 	return db
 }
-

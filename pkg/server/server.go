@@ -24,9 +24,9 @@ import (
 
 */
 
-type ConfigData struct{
-	Serv Server `json:"server"`
-	Db Database `json:"database"`
+type ConfigData struct {
+	Serv Server   `json:"server"`
+	Db   Database `json:"database"`
 }
 
 type Server struct {
