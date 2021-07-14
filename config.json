@@ -1,0 +1,15 @@
+{
+    "server": {
+        "port": "3000",
+        "host": "localhost"
+    },
+
+    "database": {
+        "host": "localhost",
+        "user": "httpserveruser",
+        "password": "impossiblepassword",
+        "dbname": "httpserverdb",
+        "port": "5432",
+        "sslmode": "disable"
+    }
+}
