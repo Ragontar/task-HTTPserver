@@ -20,6 +20,8 @@ import (
 
 	NewServer() *Server --- initializes a new HTTP server, returns Server structure. Uses getConfig().
 
+	sendResponse(w http.ResponseWriter, usr User) --- sends JSON with user.
+
 	(s *Server) Run() --- starts the server.
 
 */
@@ -56,28 +58,45 @@ func NewServer() *Server {
 func (s *Server) Run() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		name := r.FormValue("name")
+
 		if name == "" {
 			fmt.Fprintln(w, "What's wrong with you?")
 			return
 		}
+
 		if r.Method == http.MethodGet {
 			usr, err := getUser(name)
 			if err != nil {
 				fmt.Fprintln(w, err)
 				return
 			}
+			
 			fmt.Fprintf(w, "User %s found in database! Take him!\n", usr.Name)
+			sendResponse(w, usr)
 		}
+
 		if r.Method == http.MethodPost {
 			err := addUser(User{name})
 			if err != nil {
 				fmt.Fprintln(w, err)
 				return
 			}
+
 			fmt.Fprintf(w, "User %s added to database!\n", name)
 		}
 	})
 
 	addr := ":" + s.Port
 	http.ListenAndServe(addr, nil)
+}
+
+func sendResponse(w http.ResponseWriter, usr User) {
+	resp, err := json.Marshal(usr)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(resp)
 }
